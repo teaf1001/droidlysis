@@ -79,6 +79,7 @@ class droidreport:
             self.reportfile.write(message)
 
     def write_console(self, message):
+        return
         if self.console:
             print(message)
 
