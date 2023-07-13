@@ -238,3 +238,4 @@ class droidproperties:
         f = open(filename, 'w')
         f.write(json.dumps(data))
         f.close()
+        return data

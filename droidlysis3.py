@@ -110,9 +110,11 @@ def process_input(args):
 
     for element in args.input:
         if os.path.isdir(element):
+            print(f"{element} is directory!")
+            return
             listing = os.listdir(element)
             for file in listing:
-                process_file(config,
+                res = process_file(config,
                              os.path.join(element, file),
                              outdir=args.output,
                              verbose=args.verbose,
@@ -135,7 +137,7 @@ def process_input(args):
                         logging.debug("%s no longer present?: %s\n" % (file, str(e)))
 
         if os.path.isfile(element):
-            process_file(config,
+            return process_file(config,
                          os.path.join('.', element),
                          outdir=args.output,
                          verbose=args.verbose,
@@ -198,7 +200,7 @@ def process_file(config,
             sample.properties.write(sql)
 
         if not disable_json:
-            sample.properties.dump_json(os.path.join(sample.outdir, json_file))
+            res = sample.properties.dump_json(os.path.join(sample.outdir, json_file))
 
         if not silent and not clear:
             report = droidreport.droidreport(sample, console=True, report_to_file=disable_report)
@@ -213,8 +215,8 @@ def process_file(config,
                 print("Removing directory %s ..." % (sample.outdir))
             proc = subprocess.Popen(['rm', '-rf', sample.outdir])
             proc.communicate()
-
         sample.close()
+        return res
 
 
 def check_python_version():
